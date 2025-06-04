@@ -1,3 +1,4 @@
+const OPENAI_KEY = 'your_openai_api_key_here'; // Replace with your OpenAI API key
 
 // Call OpenAI API
 export async function callOpenAI(prompt) {
