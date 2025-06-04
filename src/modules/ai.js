@@ -1,4 +1,3 @@
-const OPENAI_KEY = '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';
 
 // Call OpenAI API
 export async function callOpenAI(prompt) {
