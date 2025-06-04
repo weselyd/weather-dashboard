@@ -1,4 +1,4 @@
-const API_KEY = 'edf201ca7d38d47dc27b01665c22b00a';
+const API_KEY = 'your_openweathermap_api_key_here'; // Replace with your OpenWeatherMap API key
 
 export const owDirectGeocode = async (city) => {
   const response = await fetch(
