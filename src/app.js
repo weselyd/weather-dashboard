@@ -1,30 +1,35 @@
-const API_KEY = 'your_openweather_api_key_here'; // Replace with your actual API key
+import { owDirectGeocode, owGetCurrentWeather } from './modules/api.js';
+import { displayAiAdvice, showWeather, showError, showSpinner } from './modules/ui.js';
+import { citySearch, aiButton } from './modules/events.js';
+import { callOpenAI } from './modules/ai.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('#search-form').addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const city = document.querySelector('#city-input').value.trim();
+  
+  citySearch(async (city) => {
     if (!city) return;
-
+    showSpinner('weather-output'); // Show spinner while loading weather data
     try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-      );
-      if (!response.ok) {
-        throw new Error('City not found');
-      }
-      const weatherData = await response.json();
+      const location = await owDirectGeocode(city);  // Get city location data from OpenWeatherMap
+      const weatherData = await owGetCurrentWeather(location.lat, location.lon);  // Use location data to get weather data
 
-      // Update UI
-      document.querySelector('#weather-output').innerHTML = `
-        <h2>${weatherData.name}, ${weatherData.sys.country}</h2>
-        <p>Temperature: ${weatherData.main.temp}°C</p>
-        <p>Weather: ${weatherData.weather[0].description}</p>
-      `;
+      showWeather(location, weatherData);  // Display weather data on the page
+      aiButton(async (prompt) => {  // Set up AI button to fetch advice based on weather data
+        if (!prompt) return;
+        const adviceElem = displayAiAdvice();  // Create section for AI advice if it doesn't exist
+        showSpinner('ai-weather-advice');  // Show spinner while loading AI response
 
-    } catch (error) {
+        try {
+          const aiReponse = await callOpenAI(prompt);  // Call OpenAI API with the prompt
+          adviceElem.textContent = aiReponse.output?.[0]?.content?.[0]?.text?.trim() || "No advice received.";
+        } catch (error) {  // Handle any errors from the OpenAI API call, log to console, and display a user-friendly message
+          console.error('Error fetching AI advice:', error);
+          adviceElem.textContent = "Could not get advice from OpenAI";
+        }
+      });
+    } catch (error) {  // Handle any errors from the OpenWeatherMap API calls, log to console, and display a user-friendly message
       console.error('Error fetching weather:', error);
-      document.querySelector('#weather-output').innerHTML = '<p>City not found. Please try again.</p>';
+      showError();
     }
   });
-});
+})

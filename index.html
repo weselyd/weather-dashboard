@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-mode">
+  <header>
+    <h1>Week 4 Assignment: Refactoring and Enhancing a Weather App with ES6 Modules and AI Integration</h1>
+  </header>
+  <main>
+    <form id="search-form" autocomplete="off">
+      <input
+        type="text"
+        id="city-input"
+        placeholder="Enter City"
+        aria-label="Enter City"
+        required
+      />
+      <button type="submit">Get My Weather</button>
+    </form>
+    <section id="weather-output"></section>
+  </main>
+  <footer style="text-align:center; margin-top:2em;">
+    Weather advice powered by OpenAI
+  </footer>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
