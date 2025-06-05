@@ -12,3 +12,6 @@ The project's files are broken out into ES6 modules:
  - styles.css: core styling
 
  To deploy this app, just clone the repo and store in root directory of webserver.  Once you have that you'll need to add your API keys, one for OpenWeatherMap (stored in api.js) and the other for OpenAI (stored in ai.js).  All there is left to do then is to start the server and open index.html.
+
+
+ Video walkthrough: https://youtu.be/TzoiQk2ZtqE
